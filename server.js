@@ -11,9 +11,16 @@ app.post('/run', async (req, res) => {
   let browser;
   try {
     browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      headless: true
-    });
+  executablePath: process.env.CHROME_BIN || puppeteer.executablePath(),
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--single-process',
+    '--no-zygote'
+  ],
+  headless: true
+});
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 
