@@ -47,7 +47,6 @@ await autoScroll(page);
 
 
     let result;
-    let result;
 
 if (action === 'emails') {
   const html = await page.content();
