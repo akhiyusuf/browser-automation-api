@@ -47,10 +47,23 @@ await autoScroll(page);
 
 
     let result;
-    if (action === 'screenshot') {
-      await page.screenshot({ path: 'output.png', fullPage: true });
-      result = 'screenshot saved';
-    } else if (action === 'html') {
+    let result;
+
+if (action === 'emails') {
+  const html = await page.content();
+  const emails = [...new Set(
+    html.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) || []
+  )];
+  result = emails;
+} else if (action === 'screenshot') {
+  await page.screenshot({ path: 'output.png', fullPage: true });
+  result = 'screenshot saved';
+} else if (action === 'html') {
+  result = await page.content();
+} else {
+  result = await page.title();
+}
+ else if (action === 'html') {
       result = await page.content();
     } else {
       result = await page.title();
