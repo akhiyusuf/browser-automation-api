@@ -23,6 +23,28 @@ app.post('/run', async (req, res) => {
 });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+    // Smart Scroll Helper
+async function autoScroll(page) {
+  await page.evaluate(async () => {
+    await new Promise((resolve) => {
+      let totalHeight = 0;
+      const distance = 800;
+      const timer = setInterval(() => {
+        const scrollHeight = document.body.scrollHeight;
+        window.scrollBy(0, distance);
+        totalHeight += distance;
+        if (totalHeight >= scrollHeight) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 500);
+    });
+  });
+}
+
+// Scroll the page to ensure all elements load
+await autoScroll(page);
+
 
     let result;
     if (action === 'screenshot') {
